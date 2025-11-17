@@ -2,100 +2,55 @@ import { useState } from "react";
 
 export default function Home() {
   const [email, setEmail] = useState("");
-  const [token, setToken] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [error, setError] = useState("");
+  const [inbox, setInbox] = useState([]);
+  const [login, setLogin] = useState("");
+  const [domain, setDomain] = useState("");
 
-  async function createEmail() {
-    try {
-      setError("");
+  async function generateEmail() {
+    const res = await fetch(
+      "https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1"
+    );
+    const data = await res.json();
+    const mail = data[0];
 
-      const address = `user${Math.floor(Math.random() * 99999)}@getnada.com`;
+    setEmail(mail);
 
-      const res = await fetch("https://api.mail.gw/accounts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          address,
-          password: "TempMail123",
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!data.address) {
-        setError("❌ Failed to generate email.");
-        console.log(data);
-        return;
-      }
-
-      setEmail(data.address);
-
-      // Now request token
-      const tokenRes = await fetch("https://api.mail.gw/token", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          address: data.address,
-          password: "TempMail123",
-        }),
-      });
-
-      const tokenData = await tokenRes.json();
-
-      if (!tokenData.token) {
-        setError("❌ Failed to get token.");
-        console.log(tokenData);
-        return;
-      }
-
-      setToken(tokenData.token);
-    } catch (err) {
-      console.log(err);
-      setError("❌ Network error");
-    }
+    const [user, host] = mail.split("@");
+    setLogin(user);
+    setDomain(host);
   }
 
-  async function loadInbox() {
-    try {
-      const res = await fetch("https://api.mail.gw/messages", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  async function checkInbox() {
+    if (!login) return;
 
-      const data = await res.json();
-      setMessages(data["hydra:member"]);
-    } catch (err) {
-      setError("❌ Failed to load inbox.");
-      console.log(err);
-    }
+    const res = await fetch(
+      `https://www.1secmail.com/api/v1/?action=getMessages&login=${login}&domain=${domain}`
+    );
+
+    const messages = await res.json();
+    setInbox(messages);
   }
 
   return (
     <div style={{ padding: 20, fontFamily: "sans-serif" }}>
-      <h1>🔥 Real Temp Mail</h1>
+      <h1>🔥 1SecMail Temp Email</h1>
 
-      <button onClick={createEmail}>Generate Email</button>
-
-      {error && (
-        <p style={{ color: "red" }}>{error}</p>
-      )}
+      <button onClick={generateEmail}>Generate Email</button>
 
       {email && (
         <>
-          <h2>Your Temp Email:</h2>
-          <p>{email}</p>
+          <h2>📩 Your Temp Email</h2>
+          <p style={{ fontSize: 18, fontWeight: "bold" }}>{email}</p>
 
-          <button onClick={loadInbox}>Check Inbox</button>
+          <button onClick={checkInbox}>Check Inbox</button>
 
           <h3>Inbox:</h3>
-          {messages.length === 0 && <p>No emails yet...</p>}
+          {inbox.length === 0 && <p>No mail yet…</p>}
 
           <ul>
-            {messages.map((msg) => (
+            {inbox.map((msg) => (
               <li key={msg.id}>
-                <strong>{msg.from.address}</strong> — {msg.subject}
+                <strong>{msg.from}</strong> — {msg.subject}
               </li>
             ))}
           </ul>
