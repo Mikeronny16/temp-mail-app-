@@ -4,52 +4,83 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const [messages, setMessages] = useState([]);
+  const [error, setError] = useState("");
 
   async function createEmail() {
-    const res = await fetch("https://api.mail.tm/accounts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        address: `user${Math.floor(Math.random()*99999)}@mailto.plus`,
-        password: "TempMail123",
-      }),
-    });
+    try {
+      setError("");
 
-    const data = await res.json();
-    setEmail(data.address);
+      const address = `user${Math.floor(Math.random() * 99999)}@getnada.com`;
 
-    // Login to receive token
-    const tokenRes = await fetch("https://api.mail.tm/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        address: data.address,
-        password: "TempMail123",
-      }),
-    });
+      const res = await fetch("https://api.mail.gw/accounts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          address,
+          password: "TempMail123",
+        }),
+      });
 
-    const tokenData = await tokenRes.json();
-    setToken(tokenData.token);
+      const data = await res.json();
+
+      if (!data.address) {
+        setError("❌ Failed to generate email.");
+        console.log(data);
+        return;
+      }
+
+      setEmail(data.address);
+
+      // Now request token
+      const tokenRes = await fetch("https://api.mail.gw/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          address: data.address,
+          password: "TempMail123",
+        }),
+      });
+
+      const tokenData = await tokenRes.json();
+
+      if (!tokenData.token) {
+        setError("❌ Failed to get token.");
+        console.log(tokenData);
+        return;
+      }
+
+      setToken(tokenData.token);
+    } catch (err) {
+      console.log(err);
+      setError("❌ Network error");
+    }
   }
 
   async function loadInbox() {
-    const res = await fetch("https://api.mail.tm/messages", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      const res = await fetch("https://api.mail.gw/messages", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    const data = await res.json();
-    setMessages(data["hydra:member"]);
+      const data = await res.json();
+      setMessages(data["hydra:member"]);
+    } catch (err) {
+      setError("❌ Failed to load inbox.");
+      console.log(err);
+    }
   }
 
   return (
     <div style={{ padding: 20, fontFamily: "sans-serif" }}>
       <h1>🔥 Real Temp Mail</h1>
 
-      <button onClick={createEmail}>
-        Generate Email
-      </button>
+      <button onClick={createEmail}>Generate Email</button>
+
+      {error && (
+        <p style={{ color: "red" }}>{error}</p>
+      )}
 
       {email && (
         <>
