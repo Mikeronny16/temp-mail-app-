@@ -13,7 +13,7 @@ export default function Signatures() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="signatures" ref={ref} style={{ padding: '7rem 6rem', background: 'var(--bg)' }}>
+    <section id="signatures" ref={ref} style={{ padding: '7rem 2.5rem', background: 'var(--bg)', maxWidth: 1200, margin: '0 auto' }}>
       <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
         style={{ marginBottom: '4rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
@@ -25,30 +25,56 @@ export default function Signatures() {
         </h2>
       </motion.div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem' }}>
         {drinks.map((d, i) => (
           <motion.div key={d.name}
             initial={{ opacity: 0, y: 32 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: i * 0.12 }}
-            whileHover={{ y: -6 }}
-            style={{ border: '1px solid var(--border)', borderRadius: '1.25rem', overflow: 'hidden', background: 'var(--surface)', cursor: 'pointer', transition: 'box-shadow 0.3s' }}
+            whileHover={{ y: -8, scale: 1.01 }}
+            style={{
+              backdropFilter: 'blur(20px) brightness(1.06) saturate(1.15)',
+              WebkitBackdropFilter: 'blur(20px) brightness(1.06) saturate(1.15)',
+              background: 'linear-gradient(160deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 50%, rgba(201,168,76,0.04) 100%)',
+              border: '1px solid rgba(255,255,255,0.10)',
+              borderRadius: '1.5rem', overflow: 'hidden', cursor: 'pointer',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12)',
+              position: 'relative', transition: 'box-shadow 0.35s',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.16), 0 0 40px rgba(201,168,76,0.08)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12)' }}
           >
+            {/* Top shine */}
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '35%', background: 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%)', pointerEvents: 'none', zIndex: 1 }} />
+
             {/* Image */}
             <div style={{ position: 'relative', height: 260, overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', inset: 0, background: `url("${d.img}") center/cover` }} />
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, var(--surface) 0%, transparent 50%)' }} />
-              <div style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'var(--gold)', color: '#0C1A14', padding: '0.3rem 0.75rem', borderRadius: '999px', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.05em' }}>
-                {d.badge}
-              </div>
+              <div style={{ position: 'absolute', inset: 0, background: `url("${d.img}") center/cover`, transition: 'transform 0.5s ease' }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(7,14,10,0.75) 0%, transparent 55%)' }} />
+              <div style={{
+                position: 'absolute', top: '1rem', right: '1rem',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                background: 'linear-gradient(135deg, rgba(201,168,76,0.85), rgba(201,168,76,0.6))',
+                color: '#07120A', padding: '0.28rem 0.75rem', borderRadius: '999px',
+                fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.05em',
+                boxShadow: '0 2px 8px rgba(201,168,76,0.3)',
+              }}>{d.badge}</div>
             </div>
+
             {/* Text */}
-            <div style={{ padding: '1.5rem' }}>
-              <div style={{ fontSize: '0.7rem', color: 'var(--gold)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>{d.tag}</div>
-              <h3 className="display" style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.5rem' }}>{d.name}</h3>
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '1.25rem' }}>{d.desc}</p>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', borderTop: '1px solid var(--border-dim)' }}>
-                <span className="display" style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--gold)' }}>{d.price}</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Hot / Iced</span>
+            <div style={{ padding: '1.5rem', position: 'relative', zIndex: 2 }}>
+              <div style={{ fontSize: '0.68rem', color: 'var(--gold)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>{d.tag}</div>
+              <h3 className="display" style={{ fontSize: '1.2rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.5rem' }}>{d.name}</h3>
+              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.65, marginBottom: '1.25rem' }}>{d.desc}</p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+                <span className="display" style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--gold)' }}>{d.price}</span>
+                <span style={{
+                  fontSize: '0.72rem', color: 'var(--text-muted)', padding: '0.25rem 0.65rem',
+                  backdropFilter: 'blur(8px)',
+                  background: 'rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '999px',
+                }}>Hot / Iced</span>
               </div>
             </div>
           </motion.div>
