@@ -66,8 +66,17 @@ export default function ScrollImageSequence({
 
   useGSAP(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const small = window.matchMedia("(max-width: 768px)").matches;
-    if (reduced || small) { setUseFallback(true); return; }
+    // Only skip the frame sequence on genuinely constrained connections
+    // (data-saver on, or 2g/slow-2g), not on every phone. Myanmar mobile
+    // users on a decent connection still get the cinematic 360.
+    const conn = (navigator as unknown as {
+      connection?: { saveData?: boolean; effectiveType?: string };
+    }).connection;
+    const constrained =
+      !!conn?.saveData ||
+      conn?.effectiveType === "2g" ||
+      conn?.effectiveType === "slow-2g";
+    if (reduced || constrained) { setUseFallback(true); return; }
 
     let loaded = 0;
     let cancelled = false;
