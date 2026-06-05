@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "magic": {
+      "command": "npx",
+      "args": ["@21st-dev/magic@latest"],
+      "env": {
+        "TWENTYFIRST_API_KEY": ""
+      }
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  }
+}
