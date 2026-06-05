@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 
-const MODELS = ["GT 63 S", "S 580", "GLE 53 AMG"];
+const MODELS = ["Tucson", "Santa Fe", "Kona"];
 
 export default function TestDriveForm() {
   const [data, setData] = useState({

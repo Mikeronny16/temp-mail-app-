@@ -5,11 +5,12 @@ import { AnimatePresence, motion } from "framer-motion";
 
 type Color = { name: string; hex: string; poster: string };
 
+const HERO = "/posters/hero.webp";
 const DEFAULT_COLORS: Color[] = [
-  { name: "Obsidian Black", hex: "#0c0c0d", poster: "/posters/obsidian.webp" },
-  { name: "Polar White", hex: "#e8e8e6", poster: "/posters/white.webp" },
-  { name: "Crimson Red", hex: "#8b0000", poster: "/posters/crimson.webp" },
-  { name: "Midnight Blue", hex: "#0d1b3e", poster: "/posters/blue.webp" },
+  { name: "Polar White", hex: "#e8e8e6", poster: HERO },
+  { name: "Crimson Red", hex: "#8b0000", poster: HERO },
+  { name: "Midnight Blue", hex: "#0d1b3e", poster: HERO },
+  { name: "Obsidian Black", hex: "#0c0c0d", poster: HERO },
 ];
 
 export default function ColorConfigurator({ colors = DEFAULT_COLORS }: { colors?: Color[] }) {
@@ -37,33 +38,35 @@ export default function ColorConfigurator({ colors = DEFAULT_COLORS }: { colors?
           <AnimatePresence mode="wait">
             <motion.div
               key={color.name}
-              className="absolute inset-0 flex items-center justify-center"
+              className="absolute inset-0"
               initial={{ opacity: 0, scale: 1.03 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.45, ease: "easeOut" }}
             >
-              {/* Placeholder gradient until real poster images are added */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background: `radial-gradient(ellipse at center, ${color.hex}44 0%, var(--bg) 70%)`,
-                }}
+              {/* Real car poster */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={color.poster}
+                alt={`${color.name} finish`}
+                className="absolute inset-0 h-full w-full object-cover"
               />
-              <div className="relative z-10 text-center">
+              {/* Color tint overlay — simulates the paint on the white car.
+                  Skipped for white so the original paint shows. */}
+              {active !== 0 && (
                 <div
-                  className="mb-2 text-xs uppercase tracking-widest"
-                  style={{ color: "var(--text-dim)" }}
+                  className="absolute inset-0"
+                  style={{ background: color.hex, mixBlendMode: "multiply", opacity: 0.78 }}
+                />
+              )}
+              {/* Label */}
+              <div className="absolute bottom-5 left-5 z-10">
+                <span
+                  className="text-xs uppercase tracking-widest"
+                  style={{ color: "var(--text)" }}
                 >
                   {color.name}
-                </div>
-                <div
-                  className="h-20 w-20 mx-auto rounded-full border-4"
-                  style={{ background: color.hex, borderColor: "var(--line)" }}
-                />
-                <p className="mt-4 text-sm" style={{ color: "var(--text-dim)" }}>
-                  Add poster images to /public/posters/ to display the car
-                </p>
+                </span>
               </div>
             </motion.div>
           </AnimatePresence>

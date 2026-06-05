@@ -11,6 +11,7 @@ export default function Home() {
       {/* 1. Cinematic scroll hero */}
       <HeroSequence
         brand="LUXE AUTO"
+        frameCount={118}
         tagline="Engineered to be remembered"
         tagline2="Performance without compromise"
         tagline3="Where luxury meets precision"

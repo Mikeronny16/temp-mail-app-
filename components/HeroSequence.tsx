@@ -15,7 +15,7 @@ type Props = {
 
 export default function HeroSequence({
   framesPath = "/sequence/hero",
-  frameCount = 120,
+  frameCount = 118,
   posterSrc = "/posters/hero.webp",
   brand = "LUXE AUTO",
   tagline = "Engineered to be remembered",
