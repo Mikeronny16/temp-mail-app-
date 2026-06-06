@@ -1,30 +1,11 @@
 'use client'
-<<<<<<< HEAD
-=======
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
->>>>>>> claude/jolly-turing-c3LGh
 import Nav from '@/components/Nav'
 import Hero from '@/components/Hero'
 import Marquee from '@/components/Marquee'
 import Signatures from '@/components/Signatures'
 import Menu from '@/components/Menu'
-<<<<<<< HEAD
-import Location from '@/components/Location'
-import Footer from '@/components/Footer'
-
-export default function Home() {
-  return (
-    <main>
-      <Nav />
-      <Hero />
-      <Marquee />
-      <Signatures />
-      <Menu />
-      <Location />
-      <Footer />
-    </main>
-=======
 import Gallery from '@/components/Gallery'
 import Reservation from '@/components/Reservation'
 import Location from '@/components/Location'
@@ -33,12 +14,11 @@ import Footer from '@/components/Footer'
 const Intro = dynamic(() => import('@/components/Intro'), { ssr: false })
 
 export default function Home() {
-  const [introDone, setIntroDone] = useState(false)
-
+  const [done, setDone] = useState(false)
   return (
     <>
-      {!introDone && <Intro onDone={() => setIntroDone(true)} />}
-      <main style={{ opacity: introDone ? 1 : 0, transition: 'opacity 0.5s ease' }}>
+      {!done && <Intro onDone={() => setDone(true)} />}
+      <main style={{ opacity: done ? 1 : 0, transition: 'opacity 0.5s ease' }}>
         <Nav />
         <Hero />
         <Marquee />
@@ -50,6 +30,5 @@ export default function Home() {
         <Footer />
       </main>
     </>
->>>>>>> claude/jolly-turing-c3LGh
   )
 }

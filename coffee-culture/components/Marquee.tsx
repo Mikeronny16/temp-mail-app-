@@ -1,7 +1,11 @@
 'use client'
 import { motion } from 'framer-motion'
 
+<<<<<<< HEAD
 const items = ['Espresso','Matcha Strawberry','Ocean Taste','Hand Drip V60','Signature Blend','Yogurt Cheese','Strawberry Sunrise','Double Fresh','Tonic Espresso','Frappe','Italian Soda','Specialty Coffee']
+=======
+const items = ['Espresso', 'Matcha Strawberry', 'Ocean Taste', 'Hand Drip V60', 'Signature Blend', 'Yogurt Cheese', 'Strawberry Sunrise', 'Double Fresh', 'Tonic Espresso', 'Frappe', 'Italian Soda', 'Specialty Coffee']
+>>>>>>> claude/jolly-turing-c3LGh
 
 export default function Marquee() {
   return (
@@ -9,7 +13,11 @@ export default function Marquee() {
       <motion.div
         animate={{ x: ['0%', '-50%'] }}
         transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+<<<<<<< HEAD
         style={{ display: 'flex', whiteSpace: 'nowrap', width: 'max-content' }}
+=======
+        style={{ display: 'flex', gap: '0', whiteSpace: 'nowrap', width: 'max-content' }}
+>>>>>>> claude/jolly-turing-c3LGh
       >
         {[...items, ...items].map((item, i) => (
           <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '1.5rem', padding: '0 2rem' }}>
