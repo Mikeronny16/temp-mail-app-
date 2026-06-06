@@ -8,7 +8,7 @@ export default function Intro({ onDone }: { onDone: () => void }) {
 
   useEffect(() => {
     const start = Date.now()
-    const dur = 2400
+    const dur = 2600
     const id = setInterval(() => {
       const p = Math.min((Date.now() - start) / dur, 1)
       setProgress(p)
@@ -29,43 +29,45 @@ export default function Intro({ onDone }: { onDone: () => void }) {
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
           style={{
             position: 'fixed', inset: 0, zIndex: 9000,
-            background: '#F5EFE0',
+            background: '#1A4FC4',
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
           }}
         >
-          {/* Decorative lines */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            style={{ width: 1, height: 60, background: 'linear-gradient(to bottom, transparent, var(--terra))', marginBottom: '2rem', transformOrigin: 'top' }}
-          />
+          {/* Animated S curve */}
+          <motion.svg
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
+            width="60" height="100" viewBox="0 0 60 100"
+            style={{ marginBottom: '1.5rem' }}
+          >
+            <motion.path
+              d="M 45 10 C 45 10, 10 25, 30 50 C 50 75, 15 90, 15 90"
+              fill="none" stroke="#F0B429" strokeWidth="4" strokeLinecap="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 1.4, delay: 0.2, ease: 'easeInOut' }}
+            />
+          </motion.svg>
 
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
             style={{ textAlign: 'center' }}
           >
-            <div className="display" style={{ fontSize: 'clamp(2.2rem, 6vw, 4rem)', fontStyle: 'italic', color: 'var(--terra)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+            <div className="display" style={{ fontSize: 'clamp(2.2rem, 6vw, 4rem)', fontStyle: 'italic', color: '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
               The Story Cafe
             </div>
-            <div className="myanmar" style={{ fontSize: '1.1rem', color: 'var(--green)', marginTop: '0.5rem', letterSpacing: '0.02em' }}>
+            <div className="myanmar" style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.65)', marginTop: '0.5rem' }}>
               ဇာတ်လမ်းကဖေး
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            style={{ width: 1, height: 60, background: 'linear-gradient(to bottom, var(--terra), transparent)', marginTop: '2rem', transformOrigin: 'bottom' }}
-          />
-
-          {/* Progress */}
-          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 3, background: 'var(--surface2)' }}>
-            <div style={{ height: '100%', width: `${progress * 100}%`, background: 'linear-gradient(to right, var(--terra), var(--green))', transition: 'width 0.1s linear' }} />
+          {/* Progress bar */}
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 3, background: 'rgba(255,255,255,0.15)' }}>
+            <div style={{ height: '100%', width: `${progress * 100}%`, background: '#F0B429', transition: 'width 0.1s linear' }} />
           </div>
         </motion.div>
       )}
