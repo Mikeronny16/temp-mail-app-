@@ -1,62 +1,74 @@
 'use client'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect } from 'react'
 
 export default function Intro({ onDone }: { onDone: () => void }) {
-  const [phase, setPhase] = useState<'in' | 'text' | 'exit'>('in')
+  const [progress, setProgress] = useState(0)
+  const [visible, setVisible] = useState(true)
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('text'), 600)
-    const t2 = setTimeout(() => setPhase('exit'), 2300)
-    const t3 = setTimeout(() => onDone(), 3000)
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
+    const start = Date.now()
+    const dur = 2400
+    const id = setInterval(() => {
+      const p = Math.min((Date.now() - start) / dur, 1)
+      setProgress(p)
+      if (p >= 1) {
+        clearInterval(id)
+        setTimeout(() => { setVisible(false); setTimeout(onDone, 500) }, 200)
+      }
+    }, 16)
+    return () => clearInterval(id)
   }, [onDone])
 
   return (
     <AnimatePresence>
-      {phase !== 'exit' ? (
-        <motion.div key="intro"
+      {visible && (
+        <motion.div
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-          style={{ position: 'fixed', inset: 0, zIndex: 99999, background: '#FAFAF7', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
+          exit={{ opacity: 0, scale: 1.02 }}
+          transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 9000,
+            background: '#F5EFE0',
+            display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center',
+          }}
         >
-          {/* Blue ink dot expanding */}
+          {/* Decorative lines */}
           <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            style={{ width: 80, height: 80, borderRadius: '50%', border: '2px solid var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.75rem', position: 'relative' }}
-          >
-            <motion.div initial={{ scale: 1.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.8, delay: 0.2 }}
-              style={{ position: 'absolute', inset: -12, borderRadius: '50%', border: '1px solid rgba(35,80,204,0.2)' }} />
-            <span style={{ fontSize: '2rem' }}>📖</span>
-          </motion.div>
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            style={{ width: 1, height: 60, background: 'linear-gradient(to bottom, transparent, var(--terra))', marginBottom: '2rem', transformOrigin: 'top' }}
+          />
 
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={phase === 'text' ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
             style={{ textAlign: 'center' }}
           >
-            <div className="display" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', fontWeight: 900, color: 'var(--blue)', letterSpacing: '-0.03em', marginBottom: '0.4rem' }}>
-              The STORY Cafe
+            <div className="display" style={{ fontSize: 'clamp(2.2rem, 6vw, 4rem)', fontStyle: 'italic', color: 'var(--terra)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+              The Story Cafe
             </div>
-            <motion.div initial={{ scaleX: 0 }} animate={phase === 'text' ? { scaleX: 1 } : { scaleX: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              style={{ height: '2px', background: 'var(--blue)', marginBottom: '0.7rem', transformOrigin: 'center' }} />
-            <motion.p initial={{ opacity: 0 }} animate={phase === 'text' ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ delay: 0.25 }}
-              style={{ fontSize: '0.8rem', color: 'var(--text-muted)', letterSpacing: '0.18em', textTransform: 'uppercase' }}>
-              Write your STORY over a Coffee
-            </motion.p>
+            <div className="myanmar" style={{ fontSize: '1.1rem', color: 'var(--green)', marginTop: '0.5rem', letterSpacing: '0.02em' }}>
+              ဇာတ်လမ်းကဖေး
+            </div>
           </motion.div>
 
-          {/* Progress bar */}
-          <motion.div style={{ position: 'absolute', bottom: 0, left: 0, height: '3px', background: 'var(--blue)' }}
-            initial={{ width: '0%' }} animate={{ width: '100%' }} transition={{ duration: 2.2, ease: 'linear' }} />
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            style={{ width: 1, height: 60, background: 'linear-gradient(to bottom, var(--terra), transparent)', marginTop: '2rem', transformOrigin: 'bottom' }}
+          />
+
+          {/* Progress */}
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 3, background: 'var(--surface2)' }}>
+            <div style={{ height: '100%', width: `${progress * 100}%`, background: 'linear-gradient(to right, var(--terra), var(--green))', transition: 'width 0.1s linear' }} />
+          </div>
         </motion.div>
-      ) : null}
+      )}
     </AnimatePresence>
   )
 }

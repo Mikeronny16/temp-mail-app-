@@ -1,51 +1,49 @@
 'use client'
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { motion } from 'framer-motion'
 
 const drinks = [
-  { name: 'Ex Girlfriend', price: '10,000 MMK', desc: 'Pineapple, orange & mango — you will know this ex tastes better!', img: 'https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=500&q=80', tag: 'Signature', badge: 'Most Talked' },
-  { name: 'Sooper Strawberry', price: '8,000 MMK', desc: 'Perfect matching of strawberry & mint leaves. Fresh and bold.', img: 'https://images.unsplash.com/photo-1497534446932-c925b458314e?w=500&q=80', tag: 'Signature', badge: 'Fan Fave' },
-  { name: 'Still Old Gin', price: '8,000 MMK', desc: 'Not the gin you used to know — only available at STORY. Must try.', img: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&q=80', tag: 'Exclusive', badge: 'Must Try' },
+  { name: 'Ex Girlfriend', my: 'ဟောင်းငယ်ချစ်သူ', desc: 'Sweet on the outside, bitter in the end. Brown sugar espresso with salted caramel cream.', descMY: 'ပြင်ပမှာချိုပြီး အဆုံးတွင် ခါးသော — ဆားငန် caramel cream နှင့် brown sugar espresso', price: '7,000', tag: 'Bestseller', tagMY: 'အရောင်းရဆုံး', icon: '💔', color: 'var(--terra)' },
+  { name: 'Sooper Strawberry', my: 'ဆောပါ စတော်ဘယ်ရီ', desc: 'Blended fresh strawberry smoothie with cream top. Cold, refreshing, and dangerously pink.', descMY: 'Fresh strawberry smoothie, cream top ဖြင့် — ခေတ်ဆန်သော နီညိုရောင် အချိုရည်', price: '8,000', tag: 'Fan Fave', tagMY: 'အားလုံးနှစ်သက်', icon: '🍓', color: '#C0416A' },
+  { name: 'Still Old Gin', my: 'ဟောင်းနွမ်းသော Gin', desc: 'Alcohol-free. Elderflower tonic, cucumber, mint. Like a warm afternoon that never left.', descMY: 'အရက်မပါ — elderflower tonic, cucumber, mint ဖြင့် — နွေးထွေးသော မွန်းလွဲပိုင်းကဲ့သို့', price: '6,500', tag: 'No Alcohol', tagMY: 'အရက်ကင်း', icon: '🌿', color: 'var(--green)' },
 ]
 
-export default function Signatures() {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
-
+export default function Signatures({ lang }: { lang: 'en' | 'my' }) {
   return (
-    <section id="drinks" ref={ref} className="section-pad" style={{ background: 'var(--bg)' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.55 }} style={{ marginBottom: '3.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.85rem' }}>
-            <div style={{ height: '2px', width: 32, background: 'var(--blue)' }} />
-            <span style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', color: 'var(--blue)', textTransform: 'uppercase' }}>Signature Drinks</span>
-          </div>
-          <h2 className="display" style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.03em', color: 'var(--text)' }}>
-            Only at <em style={{ color: 'var(--blue)', fontStyle: 'italic' }}>STORY</em>
+    <section id="signatures" className="section-pad" style={{ background: 'var(--surface2)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+
+        {/* Header */}
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55 }} style={{ marginBottom: '3rem' }}>
+          <div style={{ fontSize: '0.72rem', color: 'var(--terra)', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.6rem' }}>Signature Drinks</div>
+          <h2 className="display" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', color: 'var(--text)', fontStyle: 'italic' }}>
+            {lang === 'en' ? 'Our Stories in a Glass' : <span className="myanmar">ဖန်ခွက်ထဲမှ ဇာတ်လမ်းများ</span>}
           </h2>
         </motion.div>
 
         <div className="sig-grid">
           {drinks.map((d, i) => (
             <motion.div key={d.name}
-              initial={{ opacity: 0, y: 28 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.55, delay: i * 0.1 }}
-              whileHover={{ y: -6, boxShadow: '0 20px 50px rgba(20,20,20,0.14)' }}
-              style={{ background: '#fff', border: '1px solid var(--border-dim)', borderRadius: '1.5rem', overflow: 'hidden', cursor: 'pointer', boxShadow: '0 4px 20px rgba(20,20,20,0.07)', transition: 'all 0.3s' }}
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
+              whileHover={{ y: -4, boxShadow: '0 16px 44px rgba(28,17,8,0.12)' }}
+              style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '1.25rem', padding: '1.75rem', transition: 'all 0.25s', boxShadow: '0 4px 20px rgba(28,17,8,0.06)', cursor: 'default' }}
             >
-              <div style={{ position: 'relative', height: 240, overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', inset: 0, background: `url("${d.img}") center/cover`, transition: 'transform 0.5s ease' }} />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(20,20,20,0.45) 0%, transparent 50%)' }} />
-                <div style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'var(--blue)', color: '#fff', padding: '0.28rem 0.75rem', borderRadius: '999px', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.04em', boxShadow: '0 4px 12px rgba(35,80,204,0.4)' }}>{d.badge}</div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                <div style={{ fontSize: '2.2rem' }}>{d.icon}</div>
+                <span style={{ background: d.color, color: '#fff', borderRadius: '999px', padding: '0.22rem 0.7rem', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.07em' }}
+                  className={lang === 'my' ? 'myanmar' : ''}>
+                  {lang === 'en' ? d.tag : d.tagMY}
+                </span>
               </div>
-              <div style={{ padding: '1.4rem' }}>
-                <div style={{ fontSize: '0.68rem', color: 'var(--blue)', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '0.35rem' }}>{d.tag}</div>
-                <h3 className="display" style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text)', marginBottom: '0.45rem' }}>{d.name}</h3>
-                <p style={{ fontSize: '0.83rem', color: 'var(--text-muted)', lineHeight: 1.65, marginBottom: '1.1rem' }}>{d.desc}</p>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.9rem', borderTop: '1px solid var(--border-dim)' }}>
-                  <span className="display" style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--warm)' }}>{d.price}</span>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', background: 'var(--surface)', padding: '0.22rem 0.65rem', borderRadius: '999px', border: '1px solid var(--border-dim)' }}>Iced</span>
-                </div>
+              <div className="display" style={{ fontSize: '1.25rem', fontWeight: 700, fontStyle: 'italic', color: 'var(--text)', marginBottom: '0.25rem' }}>{d.name}</div>
+              <div className="myanmar" style={{ fontSize: '0.78rem', color: d.color, marginBottom: '0.75rem' }}>{d.my}</div>
+              <p className={lang === 'my' ? 'myanmar' : ''} style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.75, marginBottom: '1.25rem' }}>
+                {lang === 'en' ? d.desc : d.descMY}
+              </p>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span className="display" style={{ fontSize: '1.1rem', fontWeight: 700, color: d.color }}>{d.price} <span style={{ fontSize: '0.7rem', fontWeight: 400, color: 'var(--text-muted)' }}>MMK</span></span>
+                <a href="#reserve" style={{ background: d.color, color: '#fff', padding: '0.4rem 0.9rem', borderRadius: '999px', textDecoration: 'none', fontSize: '0.72rem', fontWeight: 600 }}>
+                  {lang === 'en' ? 'Order' : 'မှာရန်'}
+                </a>
               </div>
             </motion.div>
           ))}

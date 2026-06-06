@@ -1,78 +1,112 @@
 'use client'
-import { motion, useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
 
-export default function Reservation() {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-60px' })
-  const [sent, setSent] = useState(false)
+export default function Reservation({ lang }: { lang: 'en' | 'my' }) {
   const [form, setForm] = useState({ name: '', phone: '', date: '', time: '', guests: '2', note: '' })
+  const [sent, setSent] = useState(false)
 
-  const inp: React.CSSProperties = { width: '100%', padding: '0.8rem 0.9rem', background: 'var(--surface)', border: '1.5px solid var(--border-dim)', borderRadius: '0.65rem', color: 'var(--text)', fontSize: '0.875rem', outline: 'none', fontFamily: 'inherit', transition: 'border-color 0.2s' }
+  const t = {
+    en: {
+      heading: 'Reserve a Table', sub: 'Book your cozy corner at The Story Cafe.',
+      name: 'Your Name', phone: 'Phone Number', date: 'Date', time: 'Time',
+      guests: 'Number of Guests', note: 'Special Requests (optional)',
+      btn: 'Confirm Reservation', thanks: "We'll see you soon!", thanksSub: 'Check your phone for confirmation via Facebook / Viber.',
+      infoTitle: 'Before You Come', hours: 'Open Daily: 8AM – 10PM', addr: 'No.207 Parami Road, South Okkalapa, Yangon',
+      phone2: '+95 9 XXX XXX XXX', fb: 'Message via Facebook',
+    },
+    my: {
+      heading: 'စားပွဲမှာပါ', sub: 'The Story Cafe တွင် သင့်ထောင့်ကလေးကို ကြိုတင်မှာကြပါ။',
+      name: 'နာမည်', phone: 'ဖုန်းနံပါတ်', date: 'ရက်စွဲ', time: 'အချိန်',
+      guests: 'ဧည့်သည်အရေအတွက်', note: 'အထူးတောင်းဆိုချက် (ရှိပါက)',
+      btn: 'မှာကြားပါ', thanks: 'မကြာမီတွေ့ဆုံမည်!', thanksSub: 'Facebook / Viber မှ အတည်ပြုချက် ရပါမည်။',
+      infoTitle: 'လာမတိုင်မီ', hours: 'နေ့တိုင်း မနက် ၈ – ည ၁၀ နာရီ', addr: 'ပါရမီလမ်း အမှတ် ၂၀၇၊ တောင်ဥက္ကလာ',
+      phone2: '+95 9 XXX XXX XXX', fb: 'Facebook မှ ဆက်သွယ်ရန်',
+    },
+  }[lang]
+
+  const field = (key: keyof typeof form, label: string, type = 'text', opts?: string[]) => (
+    <div>
+      <label className={lang === 'my' ? 'myanmar' : ''} style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '0.4rem', letterSpacing: '0.04em' }}>{label}</label>
+      {opts ? (
+        <select value={form[key]} onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))}
+          style={{ width: '100%', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '0.65rem', padding: '0.7rem 0.9rem', color: 'var(--text)', fontSize: '0.88rem', outline: 'none', appearance: 'none' }}>
+          {opts.map(o => <option key={o}>{o}</option>)}
+        </select>
+      ) : (
+        <input type={type} value={form[key]} onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))}
+          style={{ width: '100%', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '0.65rem', padding: '0.7rem 0.9rem', color: 'var(--text)', fontSize: '0.88rem', outline: 'none' }} />
+      )}
+    </div>
+  )
 
   return (
-    <section id="reserve" ref={ref} className="section-pad" style={{ background: 'var(--surface)' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+    <section id="reserve" className="section-pad">
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div className="res-grid">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.55 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.85rem' }}>
-              <div style={{ height: '2px', width: 32, background: 'var(--blue)' }} />
-              <span style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', color: 'var(--blue)', textTransform: 'uppercase' }}>Book a Table</span>
-            </div>
-            <h2 className="display" style={{ fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', fontWeight: 900, letterSpacing: '-0.03em', marginBottom: '1.25rem', color: 'var(--text)' }}>
-              Reserve Your<br /><em style={{ color: 'var(--blue)', fontStyle: 'italic' }}>Chapter</em>
-            </h2>
-            <p style={{ color: 'var(--text-muted)', lineHeight: 1.8, marginBottom: '2rem', fontSize: '0.9rem' }}>
-              Whether you&apos;re writing your next chapter or simply catching up over coffee — we&apos;ll keep your seat warm.
-            </p>
-            {[{ icon: '📞', t: 'Phone', v: '+95 9 944 084948' }, { icon: '📧', t: 'Email', v: 'thestorycafe.88@gmail.com' }, { icon: '📍', t: 'Address', v: 'No.207, Parami Road, South Okkalapa, Yangon' }].map(item => (
-              <div key={item.t} style={{ display: 'flex', gap: '0.85rem', alignItems: 'flex-start', padding: '0.875rem 1rem', marginBottom: '0.6rem', background: '#fff', border: '1px solid var(--border-dim)', borderRadius: '0.875rem', boxShadow: '0 2px 10px rgba(20,20,20,0.05)' }}>
-                <span>{item.icon}</span>
-                <div>
-                  <div style={{ fontSize: '0.68rem', color: 'var(--blue)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{item.t}</div>
-                  <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>{item.v}</div>
+
+          {/* Form */}
+          <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            <div style={{ fontSize: '0.72rem', color: 'var(--terra)', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Reservation</div>
+            <h2 className={`display ${lang === 'my' ? 'myanmar' : ''}`} style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', color: 'var(--text)', fontStyle: lang === 'en' ? 'italic' : 'normal', marginBottom: '0.75rem' }}>{t.heading}</h2>
+            <p className={lang === 'my' ? 'myanmar' : ''} style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '2rem' }}>{t.sub}</p>
+
+            {sent ? (
+              <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} style={{ background: 'var(--terra-pale)', border: '1.5px solid var(--terra)', borderRadius: '1.25rem', padding: '2.5rem', textAlign: 'center' }}>
+                <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>☕</div>
+                <div className={`display ${lang === 'my' ? 'myanmar' : ''}`} style={{ fontSize: '1.4rem', fontStyle: 'italic', color: 'var(--terra)', marginBottom: '0.4rem' }}>{t.thanks}</div>
+                <p className={lang === 'my' ? 'myanmar' : ''} style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{t.thanksSub}</p>
+              </motion.div>
+            ) : (
+              <form onSubmit={e => { e.preventDefault(); setSent(true) }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  {field('name', t.name)}
+                  {field('phone', t.phone, 'tel')}
                 </div>
-              </div>
-            ))}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  {field('date', t.date, 'date')}
+                  {field('time', t.time, 'time')}
+                </div>
+                {field('guests', t.guests, 'text', ['1', '2', '3', '4', '5', '6+'])}
+                <div>
+                  <label className={lang === 'my' ? 'myanmar' : ''} style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '0.4rem' }}>{t.note}</label>
+                  <textarea value={form.note} onChange={e => setForm(p => ({ ...p, note: e.target.value }))} rows={3}
+                    style={{ width: '100%', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '0.65rem', padding: '0.7rem 0.9rem', color: 'var(--text)', fontSize: '0.88rem', outline: 'none', resize: 'vertical' }} />
+                </div>
+                <button type="submit" className={lang === 'my' ? 'myanmar' : ''}
+                  style={{ background: 'var(--terra)', color: '#fff', padding: '0.9rem', borderRadius: '0.75rem', border: 'none', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', boxShadow: '0 6px 20px var(--terra-glow)' }}>
+                  {t.btn}
+                </button>
+              </form>
+            )}
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.55, delay: 0.12 }}>
-            <div style={{ background: '#fff', border: '1.5px solid var(--border-dim)', borderRadius: '1.5rem', padding: '2rem', boxShadow: '0 8px 32px rgba(20,20,20,0.08)' }}>
-              {sent ? (
-                <div style={{ textAlign: 'center', padding: '3rem 1rem' }}>
-                  <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📖</div>
-                  <h3 className="display" style={{ fontSize: '1.5rem', color: 'var(--blue)', marginBottom: '0.75rem', fontWeight: 900 }}>Your table is set!</h3>
-                  <p style={{ color: 'var(--text-muted)' }}>We&apos;ll confirm via phone or Facebook. See you at STORY!</p>
+          {/* Info */}
+          <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '1.25rem', padding: '2rem' }}>
+              <h3 className={`display ${lang === 'my' ? 'myanmar' : ''}`} style={{ fontSize: '1.2rem', fontStyle: 'italic', color: 'var(--text)', marginBottom: '1.5rem' }}>{t.infoTitle}</h3>
+              {[
+                { icon: '🕐', text: t.hours },
+                { icon: '📍', text: t.addr },
+                { icon: '📞', text: t.phone2 },
+              ].map(item => (
+                <div key={item.icon} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                  <span style={{ fontSize: '1.1rem', flexShrink: 0, marginTop: '0.1rem' }}>{item.icon}</span>
+                  <span className={lang === 'my' ? 'myanmar' : ''} style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>{item.text}</span>
                 </div>
-              ) : (
-                <form onSubmit={e => { e.preventDefault(); setSent(true) }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                    <div><label style={{ display: 'block', fontSize: '0.68rem', color: 'var(--blue)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Name</label>
-                      <input required style={inp} placeholder="Ko Aung" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-                        onFocus={e => (e.currentTarget.style.borderColor = 'var(--blue)')} onBlur={e => (e.currentTarget.style.borderColor = 'var(--border-dim)')} /></div>
-                    <div><label style={{ display: 'block', fontSize: '0.68rem', color: 'var(--blue)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Phone</label>
-                      <input required style={inp} placeholder="+95 9 xxx" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })}
-                        onFocus={e => (e.currentTarget.style.borderColor = 'var(--blue)')} onBlur={e => (e.currentTarget.style.borderColor = 'var(--border-dim)')} /></div>
-                  </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                    <div><label style={{ display: 'block', fontSize: '0.68rem', color: 'var(--blue)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Date</label>
-                      <input required type="date" style={inp} value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} onFocus={e => (e.currentTarget.style.borderColor = 'var(--blue)')} onBlur={e => (e.currentTarget.style.borderColor = 'var(--border-dim)')} /></div>
-                    <div><label style={{ display: 'block', fontSize: '0.68rem', color: 'var(--blue)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Time</label>
-                      <input required type="time" style={inp} value={form.time} onChange={e => setForm({ ...form, time: e.target.value })} onFocus={e => (e.currentTarget.style.borderColor = 'var(--blue)')} onBlur={e => (e.currentTarget.style.borderColor = 'var(--border-dim)')} /></div>
-                  </div>
-                  <div><label style={{ display: 'block', fontSize: '0.68rem', color: 'var(--blue)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Guests</label>
-                    <select style={{ ...inp, cursor: 'pointer' }} value={form.guests} onChange={e => setForm({ ...form, guests: e.target.value })} onFocus={e => (e.currentTarget.style.borderColor = 'var(--blue)')} onBlur={e => (e.currentTarget.style.borderColor = 'var(--border-dim)')}>
-                      {['1','2','3','4','5','6','7','8+'].map(n => <option key={n} value={n}>{n} {parseInt(n) === 1 ? 'Guest' : 'Guests'}</option>)}
-                    </select></div>
-                  <div><label style={{ display: 'block', fontSize: '0.68rem', color: 'var(--blue)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.35rem' }}>Note</label>
-                    <textarea rows={2} style={{ ...inp, resize: 'none' }} placeholder="Birthday, special seating..." value={form.note} onChange={e => setForm({ ...form, note: e.target.value })} onFocus={e => (e.currentTarget.style.borderColor = 'var(--blue)')} onBlur={e => (e.currentTarget.style.borderColor = 'var(--border-dim)')} /></div>
-                  <button type="submit" style={{ marginTop: '0.25rem', background: 'var(--blue)', color: '#fff', padding: '0.9rem', borderRadius: '0.75rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', fontFamily: 'inherit', boxShadow: '0 6px 20px rgba(35,80,204,0.32)', transition: 'all 0.2s' }}
-                    onMouseEnter={e => { e.currentTarget.style.background = 'var(--blue-dark)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-                    onMouseLeave={e => { e.currentTarget.style.background = 'var(--blue)'; e.currentTarget.style.transform = 'translateY(0)' }}>
-                    📖 Reserve My Table
-                  </button>
-                </form>
-              )}
+              ))}
+            </div>
+            <a href="https://www.facebook.com/thestorycafe.88" target="_blank" rel="noopener noreferrer"
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', background: '#1877F2', color: '#fff', padding: '1rem', borderRadius: '1rem', textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem' }}>
+              <span>📘</span> <span className={lang === 'my' ? 'myanmar' : ''}>{t.fb}</span>
+            </a>
+            <div style={{ background: 'var(--terra-pale)', border: '1.5px solid var(--border)', borderRadius: '1.25rem', padding: '1.5rem', textAlign: 'center' }}>
+              <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.6rem' }}>Payment</div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                {['KBZPay', 'Wave Money', 'MMQR', 'Cash'].map(m => (
+                  <span key={m} style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '999px', padding: '0.3rem 0.75rem', fontSize: '0.72rem', color: 'var(--text)', fontWeight: 500 }}>{m}</span>
+                ))}
+              </div>
             </div>
           </motion.div>
         </div>
