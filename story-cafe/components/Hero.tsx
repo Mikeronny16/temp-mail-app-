@@ -1,6 +1,45 @@
 'use client'
 import { motion } from 'framer-motion'
 
+function AnimatedWords({ text, delay = 0, className, style }: { text: string; delay?: number; className?: string; style?: React.CSSProperties }) {
+  const words = text.split(' ')
+  return (
+    <span className={className} style={{ display: 'inline', ...style }}>
+      {words.map((word, i) => (
+        <span key={i} style={{ overflow: 'hidden', display: 'inline-block', marginRight: '0.3em' }}>
+          <motion.span
+            style={{ display: 'inline-block' }}
+            initial={{ y: '110%' }}
+            animate={{ y: '0%' }}
+            transition={{ duration: 0.65, delay: delay + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {word}
+          </motion.span>
+        </span>
+      ))}
+    </span>
+  )
+}
+
+function AnimatedLetters({ text, delay = 0 }: { text: string; delay?: number }) {
+  return (
+    <em style={{ color: 'var(--blue)', fontStyle: 'italic', display: 'inline-block' }}>
+      {text.split('').map((char, i) => (
+        <span key={i} style={{ overflow: 'hidden', display: 'inline-block' }}>
+          <motion.span
+            style={{ display: 'inline-block' }}
+            initial={{ y: '110%' }}
+            animate={{ y: '0%' }}
+            transition={{ duration: 0.65, delay: delay + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {char}
+          </motion.span>
+        </span>
+      ))}
+    </em>
+  )
+}
+
 export default function Hero({ lang }: { lang: 'en' | 'my' }) {
   const t = {
     en: {
@@ -42,25 +81,43 @@ export default function Hero({ lang }: { lang: 'en' | 'my' }) {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
               style={{ background: 'var(--white)', border: '1px solid var(--border)', borderRadius: '1.5rem', padding: '2.5rem', boxShadow: '0 4px 32px rgba(26,79,196,0.08)' }}
             >
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'var(--blue-pale)', border: '1px solid var(--border)', borderRadius: '999px', padding: '0.3rem 0.9rem', marginBottom: '1.5rem' }}>
+              <motion.div
+                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'var(--blue-pale)', border: '1px solid var(--border)', borderRadius: '999px', padding: '0.3rem 0.9rem', marginBottom: '1.5rem' }}
+              >
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--blue)', display: 'inline-block' }} />
                 <span className={lang === 'my' ? 'myanmar' : ''} style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--blue)', letterSpacing: '0.1em' }}>{t.badge}</span>
-              </div>
+              </motion.div>
 
               <h1 className="display" style={{ fontSize: 'clamp(2.4rem, 5vw, 4.2rem)', fontWeight: 700, lineHeight: 1.08, color: 'var(--text)', marginBottom: '1.2rem' }}>
-                <span className={lang === 'my' ? 'myanmar' : ''} style={{ display: 'block', fontSize: lang === 'my' ? 'clamp(1.6rem, 3.5vw, 2.8rem)' : undefined }}>{t.h1a}</span>
-                <em style={{ color: 'var(--blue)', fontStyle: 'italic' }}>{t.h1b}</em>
-                <span className={lang === 'my' ? 'myanmar' : ''} style={{ display: 'block', fontSize: lang === 'my' ? 'clamp(1.6rem, 3.5vw, 2.8rem)' : undefined }}>{t.h1c}</span>
+                <span style={{ display: 'block', fontSize: lang === 'my' ? 'clamp(1.6rem, 3.5vw, 2.8rem)' : undefined }}>
+                  <AnimatedWords text={t.h1a} delay={0.3} className={lang === 'my' ? 'myanmar' : undefined} />
+                </span>
+                {lang === 'en'
+                  ? <AnimatedLetters text={t.h1b} delay={0.5} />
+                  : <span style={{ display: 'block', fontSize: 'clamp(1.6rem, 3.5vw, 2.8rem)', color: 'var(--blue)', fontStyle: 'italic' }}>
+                      <AnimatedWords text={t.h1b} delay={0.5} className="myanmar" />
+                    </span>
+                }
+                <span style={{ display: 'block', fontSize: lang === 'my' ? 'clamp(1.6rem, 3.5vw, 2.8rem)' : undefined }}>
+                  <AnimatedWords text={t.h1c} delay={0.7} className={lang === 'my' ? 'myanmar' : undefined} />
+                </span>
               </h1>
 
-              <p className={lang === 'my' ? 'myanmar' : ''} style={{ color: 'var(--text-muted)', fontSize: lang === 'my' ? '0.92rem' : '0.97rem', lineHeight: 1.8, maxWidth: 420, marginBottom: '2rem' }}>{t.sub}</p>
+              <motion.p
+                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.9 }}
+                className={lang === 'my' ? 'myanmar' : ''} style={{ color: 'var(--text-muted)', fontSize: lang === 'my' ? '0.92rem' : '0.97rem', lineHeight: 1.8, maxWidth: 420, marginBottom: '2rem' }}
+              >{t.sub}</motion.p>
 
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <motion.div
+                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 1.0 }}
+                style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}
+              >
                 <a href="#menu" style={{ background: 'var(--blue)', color: '#fff', padding: '0.8rem 1.8rem', borderRadius: '999px', textDecoration: 'none', fontWeight: 700, fontSize: '0.875rem', boxShadow: '0 6px 20px var(--blue-glow)' }}
-                  className={lang === 'my' ? 'myanmar' : ''}>{t.cta1}</a>
+                  className={`btn-haptic ${lang === 'my' ? 'myanmar' : ''}`}>{t.cta1}</a>
                 <a href="#reserve" style={{ background: 'var(--yellow)', color: '#0D1A2A', padding: '0.8rem 1.8rem', borderRadius: '999px', textDecoration: 'none', fontWeight: 700, fontSize: '0.875rem', boxShadow: '0 4px 14px rgba(240,180,41,0.3)' }}
-                  className={lang === 'my' ? 'myanmar' : ''}>{t.cta2}</a>
-              </div>
+                  className={`btn-haptic ${lang === 'my' ? 'myanmar' : ''}`}>{t.cta2}</a>
+              </motion.div>
             </motion.div>
 
             {/* Stats + "Good Times" */}
@@ -90,24 +147,22 @@ export default function Hero({ lang }: { lang: 'en' | 'my' }) {
           <motion.div initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
             style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}
           >
-            {/* Main interior photo — the actual blue wall photo */}
-            <div style={{ borderRadius: '1.25rem', overflow: 'hidden', height: 300, position: 'relative', boxShadow: '0 12px 40px rgba(26,79,196,0.18)' }}>
+            {/* Main interior photo */}
+            <div className="photo-wash" style={{ borderRadius: '1.25rem', overflow: 'hidden', height: 300, position: 'relative', boxShadow: '0 12px 40px rgba(26,79,196,0.18)' }}>
               <div style={{ position: 'absolute', inset: 0, background: `url("https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=700&q=85") center/cover` }} />
-              {/* Blue overlay tint to match actual cafe */}
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(26,79,196,0.15) 0%, transparent 60%), linear-gradient(to top, rgba(13,26,42,0.45) 0%, transparent 55%)' }} />
               <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'var(--yellow)', color: '#0D1A2A', borderRadius: '999px', padding: '0.28rem 0.8rem', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.06em' }}>✦ 35K Community</div>
-              {/* Teal accent tag */}
               <div style={{ position: 'absolute', bottom: '1rem', right: '1rem', background: 'var(--teal)', color: '#fff', borderRadius: '999px', padding: '0.28rem 0.8rem', fontSize: '0.68rem', fontWeight: 600 }}>South Okkalapa</div>
             </div>
 
             {/* Two small cards */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-              <div style={{ borderRadius: '1rem', overflow: 'hidden', height: 130, position: 'relative', boxShadow: '0 6px 20px rgba(26,79,196,0.12)' }}>
+              <div className="photo-wash" style={{ borderRadius: '1rem', overflow: 'hidden', height: 130, position: 'relative', boxShadow: '0 6px 20px rgba(26,79,196,0.12)' }}>
                 <div style={{ position: 'absolute', inset: 0, background: `url("https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80") center/cover` }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(26,79,196,0.6) 0%, transparent 55%)' }} />
                 <div className={lang === 'my' ? 'myanmar' : ''} style={{ position: 'absolute', bottom: '0.7rem', left: '0.75rem', fontSize: '0.68rem', color: '#fff', fontWeight: 600 }}>{t.specialty}</div>
               </div>
-              <div style={{ borderRadius: '1rem', overflow: 'hidden', height: 130, position: 'relative', boxShadow: '0 6px 20px rgba(26,79,196,0.12)' }}>
+              <div className="photo-wash" style={{ borderRadius: '1rem', overflow: 'hidden', height: 130, position: 'relative', boxShadow: '0 6px 20px rgba(26,79,196,0.12)' }}>
                 <div style={{ position: 'absolute', inset: 0, background: `url("https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&q=80") center/cover` }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(26,79,196,0.6) 0%, transparent 55%)' }} />
                 <div className={lang === 'my' ? 'myanmar' : ''} style={{ position: 'absolute', bottom: '0.7rem', left: '0.75rem', fontSize: '0.68rem', color: '#fff', fontWeight: 600 }}>{t.food}</div>

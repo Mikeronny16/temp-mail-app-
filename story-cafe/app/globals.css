@@ -87,3 +87,48 @@ main > * { position: relative; z-index: 1; }
   .nav-desktop { display: none !important; }
   .mobile-burger { display: block !important; }
 }
+
+/* Blue duotone wash on photos */
+.photo-wash {
+  position: relative;
+}
+.photo-wash::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(26,79,196,0.22) 0%, rgba(63,170,188,0.12) 100%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Haptic button press */
+.btn-haptic {
+  transition: transform 80ms ease, box-shadow 80ms ease;
+}
+.btn-haptic:active {
+  transform: scale(0.94);
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 0.5rem;
+}
+
+/* Signatures desktop/mobile toggle */
+.sigs-desktop { display: block; }
+.sigs-mobile  { display: none; }
+.mobile-sticky-bar { display: none; }
+
+@media (max-width: 768px) {
+  .sigs-desktop { display: none; }
+  .sigs-mobile  { display: block; }
+  .mobile-sticky-bar { display: flex; }
+}
