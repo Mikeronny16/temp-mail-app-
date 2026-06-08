@@ -5,7 +5,6 @@ import { useRef } from 'react'
 export default function Location() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
-<<<<<<< HEAD
   return (
     <section id="location" ref={ref} style={{ padding: '7rem 6rem', background: 'var(--bg)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6rem', alignItems: 'center' }}>
       <motion.div initial={{ opacity: 0, x: -30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
@@ -46,59 +45,6 @@ export default function Location() {
           <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>Upper Pazundaung Rd, Yangon</div>
         </div>
       </motion.div>
-=======
-
-  return (
-    <section id="location" ref={ref} className="section-pad" style={{ background: 'var(--surface)' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <div className="loc-grid">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-              <div style={{ height: '1px', width: 40, background: 'var(--gold)' }} />
-              <span style={{ fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.2em', color: 'var(--gold)', textTransform: 'uppercase' }}>Visit Us</span>
-            </div>
-            <h2 className="display" style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', fontWeight: 700, lineHeight: 1.2, marginBottom: '2rem' }}>
-              Come &amp; Experience<br />
-              <em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>Coffee Culture</em>
-            </h2>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              {[
-                { icon: '📍', label: 'Address', value: 'Upper Pazundaung Rd, Yangon, Myanmar 11221' },
-                { icon: '📞', label: 'Phone', value: '+95 9 773 542924' },
-                { icon: '🕐', label: 'Hours', value: 'Open Daily · Check Facebook for updates' },
-                { icon: '📱', label: 'Instagram', value: '@Coffee Culture' },
-              ].map(item => (
-                <div key={item.label} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', padding: '1rem 1.1rem', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', background: 'linear-gradient(135deg, rgba(255,255,255,0.06), rgba(201,168,76,0.03))', border: '1px solid rgba(255,255,255,0.09)', borderRadius: '0.875rem', boxShadow: '0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)' }}>
-                  <span style={{ fontSize: '1.1rem', flexShrink: 0 }}>{item.icon}</span>
-                  <div>
-                    <div style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--gold)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.2rem' }}>{item.label}</div>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>{item.value}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <a href="tel:+959773542924" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginTop: '1.75rem', background: 'linear-gradient(135deg, var(--gold), var(--gold-light))', color: '#0C1A14', padding: '0.875rem 2rem', borderRadius: '999px', textDecoration: 'none', fontWeight: 700, fontSize: '0.875rem', boxShadow: '0 4px 20px rgba(201,168,76,0.3)' }}>
-              ☕ Call to Reserve
-            </a>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7, delay: 0.15 }}
-            style={{ borderRadius: '1.5rem', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.09)', height: 420, position: 'relative', minHeight: 280 }}>
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3819.2!2d96.1834!3d16.8245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zUGF6dW5kYXVuZw!5e0!3m2!1sen!2smm!4v1"
-              width="100%" height="100%" style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg)' }}
-              allowFullScreen loading="lazy" title="Coffee Culture Location"
-            />
-            <div style={{ position: 'absolute', top: '1rem', left: '1rem', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.10)', borderRadius: '0.75rem', padding: '0.65rem 0.9rem' }}>
-              <div style={{ fontSize: '0.75rem', color: 'var(--gold)', fontWeight: 600 }}>Coffee Culture</div>
-              <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>Upper Pazundaung Rd, Yangon</div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
->>>>>>> claude/jolly-turing-c3LGh
     </section>
   )
 }

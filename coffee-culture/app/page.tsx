@@ -1,15 +1,9 @@
 'use client'
-<<<<<<< HEAD
-=======
-import { useState } from 'react'
-import dynamic from 'next/dynamic'
->>>>>>> claude/jolly-turing-c3LGh
 import Nav from '@/components/Nav'
 import Hero from '@/components/Hero'
 import Marquee from '@/components/Marquee'
 import Signatures from '@/components/Signatures'
 import Menu from '@/components/Menu'
-<<<<<<< HEAD
 import Location from '@/components/Location'
 import Footer from '@/components/Footer'
 
@@ -24,32 +18,5 @@ export default function Home() {
       <Location />
       <Footer />
     </main>
-=======
-import Gallery from '@/components/Gallery'
-import Reservation from '@/components/Reservation'
-import Location from '@/components/Location'
-import Footer from '@/components/Footer'
-
-const Intro = dynamic(() => import('@/components/Intro'), { ssr: false })
-
-export default function Home() {
-  const [introDone, setIntroDone] = useState(false)
-
-  return (
-    <>
-      {!introDone && <Intro onDone={() => setIntroDone(true)} />}
-      <main style={{ opacity: introDone ? 1 : 0, transition: 'opacity 0.5s ease' }}>
-        <Nav />
-        <Hero />
-        <Marquee />
-        <Signatures />
-        <Menu />
-        <Gallery />
-        <Reservation />
-        <Location />
-        <Footer />
-      </main>
-    </>
->>>>>>> claude/jolly-turing-c3LGh
   )
 }

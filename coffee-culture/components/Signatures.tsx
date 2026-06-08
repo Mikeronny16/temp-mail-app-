@@ -11,7 +11,6 @@ const drinks = [
 export default function Signatures() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
-<<<<<<< HEAD
   return (
     <section id="signatures" ref={ref} style={{ padding: '7rem 6rem', background: 'var(--bg)' }}>
       <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} style={{ marginBottom: '4rem' }}>
@@ -41,47 +40,6 @@ export default function Signatures() {
             </div>
           </motion.div>
         ))}
-=======
-
-  return (
-    <section id="signatures" ref={ref} className="section-pad">
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} style={{ marginBottom: '3rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-            <div style={{ height: '1px', width: 40, background: 'var(--gold)' }} />
-            <span style={{ fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.2em', color: 'var(--gold)', textTransform: 'uppercase' }}>Crafted with Care</span>
-          </div>
-          <h2 className="display" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', fontWeight: 700, lineHeight: 1.15 }}>
-            Our Signature <em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>Creations</em>
-          </h2>
-        </motion.div>
-
-        <div className="sig-grid">
-          {drinks.map((d, i) => (
-            <motion.div key={d.name}
-              initial={{ opacity: 0, y: 32 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: i * 0.12 }}
-              whileHover={{ y: -6 }}
-              style={{ backdropFilter: 'blur(20px) brightness(1.06)', WebkitBackdropFilter: 'blur(20px) brightness(1.06)', background: 'linear-gradient(160deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 50%, rgba(201,168,76,0.04) 100%)', border: '1px solid rgba(255,255,255,0.10)', borderRadius: '1.5rem', overflow: 'hidden', cursor: 'pointer', boxShadow: '0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12)' }}
-            >
-              <div style={{ position: 'relative', height: 240, overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', inset: 0, background: `url("${d.img}") center/cover` }} />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(7,14,10,0.75) 0%, transparent 55%)' }} />
-                <div style={{ position: 'absolute', top: '1rem', right: '1rem', backdropFilter: 'blur(12px)', background: 'linear-gradient(135deg, rgba(201,168,76,0.85), rgba(201,168,76,0.6))', color: '#07120A', padding: '0.28rem 0.75rem', borderRadius: '999px', fontSize: '0.68rem', fontWeight: 700 }}>{d.badge}</div>
-              </div>
-              <div style={{ padding: '1.25rem' }}>
-                <div style={{ fontSize: '0.68rem', color: 'var(--gold)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.3rem' }}>{d.tag}</div>
-                <h3 className="display" style={{ fontSize: '1.15rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.4rem' }}>{d.name}</h3>
-                <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '1rem' }}>{d.desc}</p>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.875rem', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-                  <span className="display" style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--gold)' }}>{d.price}</span>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', padding: '0.22rem 0.6rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '999px' }}>Hot / Iced</span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
->>>>>>> claude/jolly-turing-c3LGh
       </div>
     </section>
   )

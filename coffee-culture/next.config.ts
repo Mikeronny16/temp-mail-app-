@@ -1,12 +1,3 @@
-<<<<<<< HEAD
 import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {};
-=======
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
-};
-
->>>>>>> claude/jolly-turing-c3LGh
 export default nextConfig;
